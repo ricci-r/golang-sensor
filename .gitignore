@@ -1,0 +1,49 @@
+# node_modules do frontend
+sensor-frontend/node_modules/
+sensor-frontend/package-lock.json
+
+# Build outputs do frontend
+sensor-frontend/build/
+sensor-frontend/dist/
+
+# Logs do frontend
+sensor-frontend/npm-debug.log*
+sensor-frontend/yarn-debug.log*
+sensor-frontend/yarn-error.log*
+
+# Arquivos de ambiente (frontend)
+sensor-frontend/.env
+
+# Cache e arquivos temporários (frontend)
+sensor-frontend/.cache/
+sensor-frontend/.parcel-cache/
+sensor-frontend/.next/
+sensor-frontend/.vite/
+sensor-frontend/coverage/
+
+# Arquivos OS e IDE comuns (tanto front quanto back)
+**/.DS_Store
+**/Thumbs.db
+**/.vscode/
+**/.idea/
+
+# Logs gerais
+**/logs
+**/*.log
+
+# Binários e arquivos build do Go (backend)
+sensor-backend/bin/
+sensor-backend/build/
+sensor-backend/*.exe
+sensor-backend/*.out
+sensor-backend/*.test
+
+# Diretório vendor (dependências Go)
+sensor-backend/vendor/
+
+# Arquivos de ambiente (backend)
+sensor-backend/.env
+
+# Cache Go e temporários (se existirem)
+sensor-backend/.modcache/
+sensor-backend/.cache/
