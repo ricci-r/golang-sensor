@@ -57,11 +57,11 @@ export default function SensorTable() {
         </button>
       </div>
 
-      {loading && <p>Carregando sensores...</p>}
+      {loading && <p className='text-center'>Carregando sensores...</p>}
       {error && <p className="text-red-600">{error}</p>}
 
       {!loading && !error && sensoresFiltrados.length === 0 && (
-        <p>Nenhum sensor encontrado.</p>
+        <p className='text-center'>Nenhum sensor encontrado.</p>
       )}
 
       {!loading && !error && sensoresFiltrados.length > 0 && (

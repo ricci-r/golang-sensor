@@ -96,6 +96,49 @@ O frontend estará em: `http://localhost:3000`
 
 ---
 
+## 🧪 Testes
+
+Este projeto usa **Jest** e **React Testing Library** para testes de componentes.
+
+### ▶️ Rodar testes
+
+```bash
+npm test
+```
+
+### ✅ Rodar testes com relatório de cobertura
+
+```bash
+npm test -- --coverage
+```
+
+Após a execução, será gerada a pasta `coverage/` com um relatório completo.
+
+### 🌐 Visualizar relatório HTML no navegador
+
+No macOS ou Linux:
+```bash
+open coverage/lcov-report/index.html
+```
+
+No Windows:
+```bash
+start coverage/lcov-report/index.html
+```
+
+---
+
+### 📦 Instalar dependências de teste (caso ainda não tenha)
+
+```bash
+npm install --save-dev @testing-library/react @testing-library/jest-dom
+```
+
+---
+
+Inclua `import '@testing-library/jest-dom'` no topo do `setupTests.js` para usar os matchers personalizados.
+
+
 ## 📋 Observações
 
 - Certifique-se de que o NATS esteja ativo antes de iniciar o backend.

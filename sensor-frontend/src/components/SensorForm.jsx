@@ -18,14 +18,18 @@ export default function SensorForm({ onClose }) {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
     await axios.post('http://localhost:8080/sensores/create', {
       ...sensor,
       valor: parseFloat(sensor.valor)
     });
     onClose();
-  };
+  } catch (err) {
+    console.error('Erro ao criar sensor:', err);
+  }
+};
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center">
