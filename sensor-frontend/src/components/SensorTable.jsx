@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import SensorForm from './SensorForm';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import SensorForm from "./SensorForm";
+import axios from "axios";
 
 export default function SensorTable() {
   const [sensores, setSensores] = useState([]);
-  const [filtro, setFiltro] = useState('');
+  const [filtro, setFiltro] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [sensorEditado, setSensorEditado] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -13,15 +14,15 @@ export default function SensorTable() {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get('http://localhost:8080/sensores');
+      const res = await axios.get("http://localhost:8080/sensores");
       if (Array.isArray(res.data)) {
         setSensores(res.data);
       } else {
         setSensores([]);
-        setError('Dados recebidos inválidos.');
+        setError("Dados recebidos inválidos.");
       }
     } catch (err) {
-      setError('Erro ao carregar sensores.');
+      setError("Erro ao carregar sensores.");
       setSensores([]);
     } finally {
       setLoading(false);
@@ -32,7 +33,19 @@ export default function SensorTable() {
     fetchSensores();
   }, []);
 
-  const sensoresFiltrados = (sensores || []).filter(
+  const handleDelete = async (id) => {
+    if (window.confirm("Deseja remover este sensor?")) {
+      await axios.delete(`http://localhost:8080/sensores/delete?id=${id}`);
+      fetchSensores();
+    }
+  };
+
+  const handleEdit = (sensor) => {
+    setSensorEditado(sensor);
+    setShowForm(true);
+  };
+
+  const sensoresFiltrados = sensores.filter(
     (s) =>
       s &&
       s.nome &&
@@ -50,18 +63,21 @@ export default function SensorTable() {
           onChange={(e) => setFiltro(e.target.value)}
         />
         <button
-          onClick={() => setShowForm(true)}
+          onClick={() => {
+            setSensorEditado(null);
+            setShowForm(true);
+          }}
           className="bg-blue-500 text-white px-4 py-2 rounded"
         >
           + Novo Sensor
         </button>
       </div>
 
-      {loading && <p className='text-center'>Carregando sensores...</p>}
+      {loading && <p className="text-center">Carregando sensores...</p>}
       {error && <p className="text-red-600">{error}</p>}
 
       {!loading && !error && sensoresFiltrados.length === 0 && (
-        <p className='text-center'>Nenhum sensor encontrado.</p>
+        <p className="text-center">Nenhum sensor encontrado.</p>
       )}
 
       {!loading && !error && sensoresFiltrados.length > 0 && (
@@ -72,6 +88,7 @@ export default function SensorTable() {
               <th className="border p-2">Tipo</th>
               <th className="border p-2">Valor</th>
               <th className="border p-2">Estado</th>
+              <th className="border p-2">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -80,7 +97,23 @@ export default function SensorTable() {
                 <td className="border p-2">{s.nome}</td>
                 <td className="border p-2">{s.tipo}</td>
                 <td className="border p-2">{s.valor}</td>
-                <td className="border p-2">{s.estado ? 'Ativo' : 'Inativo'}</td>
+                <td className="border p-2">{s.estado ? "Ativo" : "Inativo"}</td>
+                <td className="border p-2">
+                  <div className="flex justify-center gap-2">
+                    <button
+                      onClick={() => handleEdit(s)}
+                      className="text-blue-600"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => handleDelete(s.id)}
+                      className="text-red-600"
+                    >
+                      Excluir
+                    </button>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -89,8 +122,10 @@ export default function SensorTable() {
 
       {showForm && (
         <SensorForm
+          sensorToEdit={sensorEditado}
           onClose={() => {
             setShowForm(false);
+            setSensorEditado(null);
             fetchSensores();
           }}
         />

@@ -1,9 +1,8 @@
-// SensorForm.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 
-export default function SensorForm({ onClose }) {
-  const [sensor, setSensor] = useState({
+export default function SensorForm({ onClose, sensorToEdit }) {
+  const [sensor, setSensor] = useState(sensorToEdit || {
     nome: '',
     tipo: '',
     valor: '',
@@ -18,23 +17,32 @@ export default function SensorForm({ onClose }) {
     });
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    await axios.post('http://localhost:8080/sensores/create', {
-      ...sensor,
-      valor: parseFloat(sensor.valor)
-    });
-    onClose();
-  } catch (err) {
-    console.error('Erro ao criar sensor:', err);
-  }
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const payload = { ...sensor, valor: parseFloat(sensor.valor) };
+
+    try {
+      if (sensorToEdit) {
+        await axios.put('http://localhost:8080/sensores/update', payload);
+      } else {
+        await axios.post('http://localhost:8080/sensores/create', payload);
+      }
+      onClose();
+    } catch (err) {
+      console.error('Erro ao salvar sensor:', err);
+      alert('Erro ao salvar sensor.');
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded w-full max-w-md">
-        <h2 className="text-xl font-bold mb-4">Novo Sensor</h2>
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded w-full max-w-md"
+      >
+        <h2 className="text-xl font-bold mb-4">
+          {sensorToEdit ? 'Editar Sensor' : 'Novo Sensor'}
+        </h2>
 
         <input
           name="nome"
@@ -76,8 +84,19 @@ const handleSubmit = async (e) => {
         </label>
 
         <div className="flex justify-end gap-4">
-          <button type="button" onClick={onClose} className="text-gray-600">Cancelar</button>
-          <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">Salvar</button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-gray-600"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            className="bg-green-500 text-white px-4 py-2 rounded"
+          >
+            Salvar
+          </button>
         </div>
       </form>
     </div>
