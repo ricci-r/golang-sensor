@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SensorForm from "./SensorForm";
+import SensorSimulationControls from "./SensorSimulationControls";
 import axios from "axios";
 
 export default function SensorTable() {
@@ -19,7 +20,7 @@ export default function SensorTable() {
         setSensores(res.data);
       } else {
         setSensores([]);
-        setError("Dados recebidos inválidos.");
+        setError("Dados inválidos recebidos.");
       }
     } catch (err) {
       setError("Erro ao carregar sensores.");
@@ -35,7 +36,7 @@ export default function SensorTable() {
 
   const handleDelete = async (id) => {
     if (window.confirm("Deseja remover este sensor?")) {
-      await axios.delete(`http://localhost:8080/sensores/delete?id=${id}`);
+      await axios.delete("http://localhost:8080/sensores/delete", { data: { id } });
       fetchSensores();
     }
   };
@@ -81,7 +82,7 @@ export default function SensorTable() {
       )}
 
       {!loading && !error && sensoresFiltrados.length > 0 && (
-        <table className="w-full border">
+        <table className="w-full border mb-6">
           <thead>
             <tr className="bg-gray-100">
               <th className="border p-2">Nome</th>
@@ -93,28 +94,37 @@ export default function SensorTable() {
           </thead>
           <tbody>
             {sensoresFiltrados.map((s) => (
-              <tr key={s.id} className="text-center">
-                <td className="border p-2">{s.nome}</td>
-                <td className="border p-2">{s.tipo}</td>
-                <td className="border p-2">{s.valor}</td>
-                <td className="border p-2">{s.estado ? "Ativo" : "Inativo"}</td>
-                <td className="border p-2">
-                  <div className="flex justify-center gap-2">
-                    <button
-                      onClick={() => handleEdit(s)}
-                      className="text-blue-600"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => handleDelete(s.id)}
-                      className="text-red-600"
-                    >
-                      Excluir
-                    </button>
-                  </div>
-                </td>
-              </tr>
+              <React.Fragment key={s.id}>
+                <tr className="text-center">
+                  <td className="border p-2">{s.nome}</td>
+                  <td className="border p-2">{s.tipo}</td>
+                  <td className={`border p-2 ${s.valor < 0 ? 'text-red-600' : ''}`}>
+                    {s.valor < 0 ? "Erro" : s.valor.toFixed(2)}
+                  </td>
+                  <td className="border p-2">{s.estado ? "Ativo" : "Inativo"}</td>
+                  <td className="border p-2">
+                    <div className="flex justify-center gap-2">
+                      <button
+                        onClick={() => handleEdit(s)}
+                        className="text-blue-600"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleDelete(s.id)}
+                        className="text-red-600"
+                      >
+                        Excluir
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={5} className="border p-2 bg-gray-50">
+                    <SensorSimulationControls sensor={s} onUpdated={fetchSensores} />
+                  </td>
+                </tr>
+              </React.Fragment>
             ))}
           </tbody>
         </table>
