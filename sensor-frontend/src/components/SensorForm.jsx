@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API } from '../api/iot-sensor';
 
 export default function SensorForm({ onClose, sensorToEdit }) {
   const [sensor, setSensor] = useState(sensorToEdit || {
@@ -23,9 +24,9 @@ export default function SensorForm({ onClose, sensorToEdit }) {
 
     try {
       if (sensorToEdit) {
-        await axios.put('http://localhost:8080/sensores/update', payload);
+        await axios.put(`${API}/sensores/update`, payload);
       } else {
-        await axios.post('http://localhost:8080/sensores/create', payload);
+        await axios.post(`${API}/sensores/create`, payload);
       }
       onClose();
     } catch (err) {

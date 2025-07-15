@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { API } from "../api/iot-sensor";
 
 export default function SensorSimulationControls({ sensor, onUpdated }) {
   const [intervalo, setIntervalo] = useState(sensor.intervalo || 2);
@@ -15,7 +16,7 @@ export default function SensorSimulationControls({ sensor, onUpdated }) {
     setSucesso(false);
 
     try {
-      const res = await axios.post("http://localhost:8080/sensores/setting", {
+      const res = await axios.post(`${API}/sensores/setting`, {
         id: sensor.id,
         intervalo: Number(intervalo),
         ruido: Number(ruido),

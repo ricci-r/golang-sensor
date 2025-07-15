@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SensorForm from "./SensorForm";
 import SensorSimulationControls from "./SensorSimulationControls";
 import axios from "axios";
+import { API } from "../api/iot-sensor";
 
 export default function SensorTable() {
   const [sensores, setSensores] = useState([]);
@@ -15,7 +16,7 @@ export default function SensorTable() {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get("http://localhost:8080/sensores");
+      const res = await axios.get(`${API}/sensores`);
       if (Array.isArray(res.data)) {
         setSensores(res.data);
       } else {
@@ -36,7 +37,7 @@ export default function SensorTable() {
 
   const handleDelete = async (id) => {
     if (window.confirm("Deseja remover este sensor?")) {
-      await axios.delete("http://localhost:8080/sensores/delete", { data: { id } });
+      await axios.delete(`${API}/sensores/delete`, { data: { id } });
       fetchSensores();
     }
   };
