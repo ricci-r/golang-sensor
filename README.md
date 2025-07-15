@@ -155,6 +155,12 @@ Inclua `import '@testing-library/jest-dom'` no topo do `setupTests.js` para usar
 
 ---
 
+## Diagrama
+
+![Diagrama da Arquitetura](./sensor-simulation-architecture.png)
+
+---
+
 ## 📄 Licença
 
 Este projeto está sob a licença MIT.
