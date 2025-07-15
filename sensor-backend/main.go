@@ -24,6 +24,7 @@ func main() {
 	http.HandleFunc("/sensores/create", withOptions(handlers.CreateSensor))
 	http.HandleFunc("/sensores/update", withOptions(handlers.UpdateSensor))
 	http.HandleFunc("/sensores/delete", withOptions(handlers.DeleteSensor))
+	http.HandleFunc("/sensores/setting", withOptions(handlers.SettingSensor))
 
 	// Inicia o servidor HTTP
 	fmt.Println("🚀 Servidor rodando na porta 8080...")
@@ -63,11 +64,12 @@ func iniciarSimulacaoLeituras() {
 					// Simula erro de leitura (5% de chance)
 					if rand.Float64() < 0.05 {
 						sensor.Valor = -1 // ou outro valor inválido
-						fmt.Println("⚠️  Erro simulado no sensor:", sensor.Nome)
+						fmt.Printf("⚠️  Erro simulado no sensor: ID=%s, Nome=%s, Valor=%.2f\n", sensor.ID, sensor.Nome, sensor.Valor)
+
 					}
 
 					// Publica atualização no canal NATS
-					nats.PublicarAtualizacao("Leitura simulada: " + sensor.Nome)
+					nats.PublicarAtualizacao(fmt.Sprintf("Leitura simulada: %s (%.2f)", sensor.Nome, sensor.Valor))
 				}
 			}
 			time.Sleep(2 * time.Second)

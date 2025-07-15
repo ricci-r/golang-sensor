@@ -1,6 +1,5 @@
-// SensorSimulationControls.jsx
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 export default function SensorSimulationControls({ sensor, onUpdated }) {
   const [intervalo, setIntervalo] = useState(sensor.intervalo || 2);
@@ -8,6 +7,7 @@ export default function SensorSimulationControls({ sensor, onUpdated }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [sucesso, setSucesso] = useState(false);
+  const [sensorAtualizado, setSensorAtualizado] = useState(null);
 
   const handleSimulacao = async () => {
     setLoading(true);
@@ -15,18 +15,25 @@ export default function SensorSimulationControls({ sensor, onUpdated }) {
     setSucesso(false);
 
     try {
-      await axios.post('http://localhost:8080/sensores/configurar', {
+      const res = await axios.post("http://localhost:8080/sensores/setting", {
         id: sensor.id,
         intervalo: Number(intervalo),
         ruido: Number(ruido),
       });
+
+      console.log("Sensor atualizado:", res.data);
+      setSensorAtualizado(res.data);
       setSucesso(true);
       onUpdated && onUpdated();
     } catch (err) {
-      setError('Erro ao configurar simulação.');
+      console.error(err);
+      setError("Erro ao configurar simulação.");
     } finally {
       setLoading(false);
-      setTimeout(() => setSucesso(false), 3000);
+      setTimeout(() => {
+        setSucesso(false);
+        setSensorAtualizado(null);
+      }, 4000);
     }
   };
 
@@ -59,12 +66,19 @@ export default function SensorSimulationControls({ sensor, onUpdated }) {
           disabled={loading}
           className="bg-green-500 text-white px-3 py-1 rounded text-sm"
         >
-          {loading ? 'Salvando...' : 'Aplicar'}
+          {loading ? "Salvando..." : "Aplicar"}
         </button>
       </div>
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
-      {sucesso && <p className="text-green-600 text-sm">Configuração aplicada!</p>}
+      {/* Mensagem de sucesso */}
+      {sucesso && sensorAtualizado && (
+        <div className="text-green-600 text-sm mt-1">
+          ✅ Configuração aplicada: intervalo {sensorAtualizado.intervalo}s, ruído {sensorAtualizado.ruido}
+        </div>
+      )}
+
+      {/* Mensagem de erro */}
+      {error && <div className="text-red-600 text-sm mt-1">{error}</div>}
     </div>
   );
 }
