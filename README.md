@@ -1,166 +1,221 @@
-# Sensor App — NATS, Backend (Go) e Frontend (React + TailwindCSS)
+# Sensor application: NATS, backend (Go) and frontend (React + TailwindCSS)
 
-## 📦 Estrutura do Projeto
+
+## 📦 Project structure
+
 
 ```
-├── sensor-backend        # Backend em Go
-│   ├── main.go           # Ponto de entrada
-│   ├── handlers/         # Handlers HTTP
-│   ├── models/           # Modelos de dados
-│   └── nats/             # Cliente NATS
-└── sensor-frontend       # Frontend React com TailwindCSS
-    └── src/components/   # Componentes da UI
+├── sensor-backend # Backend en Go
+│ ├── main.go # Entry point
+│ ├── handlers/ # HTTP Handlers
+│ ├── models/ # Data models
+│ └── nats/ # NATS Client
+└── sensor-frontend # Frontend React con TailwindCSS
+└── src/components/ # UI Components
 ```
+
 
 ---
 
-## 🚀 Como Executar a Aplicação
 
-### 🔁 1. Inicie o Servidor NATS
+## 🚀 How to run the application
 
-#### Com Docker (recomendado)
-```bash
-docker run -p 4222:4222 -p 8222:8222 nats:latest
+
+### 🔁 1. Start the NATS server
+
+
+#### With Docker (recommended)
+``coup
+stevedore run -page 4222:4222 -page 8222:8222 nats:last
 ```
 
-- A porta `4222` é usada pelo cliente NATS.
-- A porta `8222` é usada para monitoramento (opcional).
 
-#### Sem Docker
-Baixe o [NATS Server](https://docs.nats.io/running-a-nats-service/introduction/installation) e execute:
+-At the door`4222`It is used by the NATS client.
+-At the door`8222`Used for monitoring (optional).
 
-```bash
-nats-server
+
+#### Sin Docker
+Download the [NATS Server](https://docs.nats.io/ejecución-de-un-servicio-nats/introducción/instalación)and run:
+
+
+``coup
+nats server
 ```
+
 
 ---
 
-### 🧠 2. Inicie o Backend (Go)
 
-#### Pré-requisitos:
-- Go 1.18 ou superior
+### 🧠 2. Start the backend (Go)
 
-#### Passos:
-```bash
+
+#### Prerequisites:
+-Go to 1.18 or higher
+
+
+#### Steps:
+``coup
 cd sensor-backend
-go mod download
+and against descargar
 ```
 
-Crie um arquivo `.env` ou exporte as variáveis:
 
-```bash
-export NATS_URL=nats://localhost:4222
-export PORT=8080
+Create a file`.env`or export the variables:
+
+
+``coup
+export NATS URL=nationals://host local:4222
+export PUERTO=8080
 ```
 
-Inicie o servidor:
-```bash
-go run main.go
+
+Start the server:
+``coup
+and run principal.go
 ```
 
-O backend estará em: `http://localhost:8080`
+
+The backend will be in:`http://localhost:8080`
+
 
 ---
 
-### 🎨 3. Inicie o Frontend (React + TailwindCSS)
 
-#### Pré-requisitos:
-- Node.js 18+
+### 🎨 3. Frontend Start (React + TailwindCSS)
 
-#### Passos:
-```bash
-cd sensor-frontend
+
+#### Prerequisites:
+-Node.js 18+
+
+
+#### Steps:
+``coup
+cd sensor interface
 npm install
 ```
 
-Crie um arquivo `.env` com a URL da API:
+
+Create a file`.env`with the API URL:
 ```env
-REACT_APP_BACKEND_URL=http://localhost:8080
+REACT APP RETURN URL=http://localhost:8080
 ```
 
-Inicie o frontend:
-```bash
-npm start
+
+Start the frontend:
+``coup
+npm begin
 ```
 
-O frontend estará em: `http://localhost:3000`
+
+The frontend will be in:`http://localhost:3000`
+
 
 ---
 
-## 🛠️ Tecnologias Usadas
 
-- **NATS**: Broker de mensagens (Pub/Sub)
-- **Go**: Backend leve e eficiente
-- **React**: Frontend reativo e rápido
-- **TailwindCSS**: Estilização rápida e responsiva
+## 🛠️ Technologies used
+
+
+- **NATS**: Message Broker (Publish/Subscribe)
+- **And**:Lightweight and efficient backend
+- **React**: Fast and responsive frontend
+- **TailwindCSS**:Fast and responsive style
+
 
 ---
 
-## 🧪 Testes
 
-Este projeto usa **Jest** e **React Testing Library** para testes de componentes.
+## 🧪 Testicles
 
-### ▶️ Rodar testes
 
-```bash
-npm test
+This project uses**Is**and**React Testing Library**to test components.
+
+
+### ▶️ Run tests
+
+
+``coup
+npm proof
 ```
 
-### ✅ Rodar testes com relatório de cobertura
 
-```bash
-npm test -- --coverage
+### ✅ Run tests with coverage report
+
+
+``coup
+npm proof -- --coverage
 ```
 
-Após a execução, será gerada a pasta `coverage/` com um relatório completo.
 
-### 🌐 Visualizar relatório HTML no navegador
+After execution, the folder will be generated.`coverage/`with a full report.
 
-No macOS ou Linux:
-```bash
+
+### 🌐 View HTML report in browser
+
+
+And macOS o Linux:
+``coup
 open coverage/lcov-report/index.html
 ```
 
-No Windows:
-```bash
-start coverage/lcov-report/index.html
+
+Without windows:
+``coup
+begin coverage/lcov-report/index.html
 ```
 
+
 ---
 
-### 📦 Instalar dependências de teste (caso ainda não tenha)
 
-```bash
-npm install --save-dev @testing-library/react @testing-library/jest-dom
+### 📦 Install the test dependencies (if you haven't already)
+
+
+``coup
+npm install --guard-dev @test-library/react @test-library/jest-dom
 ```
 
----
-
-Inclua `import '@testing-library/jest-dom'` no topo do `setupTests.js` para usar os matchers personalizados.
-
-
-## 📋 Observações
-
-- Certifique-se de que o NATS esteja ativo antes de iniciar o backend.
-- O frontend se comunica com o backend via REST, e o backend com o NATS.
-- O arquivo `natsClient.js` no frontend pode ser usado para testes, mas a comunicação real é via backend.
 
 ---
 
-## ✅ Funcionalidades
 
-- Listagem e cadastro de sensores
-- Comunicação via NATS entre frontend e backend
-- Interface responsiva com TailwindCSS
+Include`importar '@testing-library/jest-dom'`At the top of the`setupTests.js`to use custom comparators.
+
+
+
+
+## 📋 Observations
+
+
+-Make sure NATS is enabled before starting the backend.
+-The frontend communicates with the backend via REST and the backend with NATS.
+-The file`natsClient.js`On the frontend it can be used for testing, but the real communication is through the backend.
+
 
 ---
 
-## Diagrama
 
-![Diagrama da Arquitetura](./sensor-simulation-architecture.png)
+## ✅ Features
+
+
+-Listing and registering sensors
+-Communication via NATS between frontend and backend
+-Responsive interface with TailwindCSS
+
 
 ---
 
-## 📄 Licença
 
-Este projeto está sob a licença MIT.
+## Diagram
+
+
+![Architecture diagram](./arquitectura-de-simulación-de-sensores.png)
+
+
+---
+
+
+## 📄 License
+
+
+This project is licensed under the MIT License.
