@@ -1,221 +1,190 @@
-# Sensor application: NATS, backend (Go) and frontend (React + TailwindCSS)
-
-
-## 📦 Project structure
-
-
-```
-├── sensor-backend # Backend en Go
-│ ├── main.go # Entry point
-│ ├── handlers/ # HTTP Handlers
-│ ├── models/ # Data models
-│ └── nats/ # NATS Client
-└── sensor-frontend # Frontend React con TailwindCSS
-└── src/components/ # UI Components
-```
-
+Claro, Hissi! Aqui está uma versão aprimorada e profissional do seu `README.md`, com correções de erros, melhorias de formatação e maior clareza geral:
 
 ---
 
+# 🔧 Sensor Application — NATS, Go Backend & React + TailwindCSS Frontend
 
-## 🚀 How to run the application
-
-
-### 🔁 1. Start the NATS server
-
-
-#### With Docker (recommended)
-``coup
-stevedore run -page 4222:4222 -page 8222:8222 nats:last
-```
-
-
--At the door`4222`It is used by the NATS client.
--At the door`8222`Used for monitoring (optional).
-
-
-#### Sin Docker
-Download the [NATS Server](https://docs.nats.io/ejecución-de-un-servicio-nats/introducción/instalación)and run:
-
-
-``coup
-nats server
-```
-
+Aplicação simples de sensores utilizando comunicação assíncrona com **NATS**, backend em **Go**, e frontend em **React + TailwindCSS**.
 
 ---
 
+## 📁 Project Structure
 
-### 🧠 2. Start the backend (Go)
+```
+├── sensor-backend         # Backend in Go
+│   ├── main.go            # Entry point
+│   ├── handlers/          # HTTP handlers
+│   ├── models/            # Data models
+│   └── nats/              # NATS client setup
+└── sensor-frontend        # Frontend in React with TailwindCSS
+    └── src/components/    # UI Components
+```
 
+---
+
+## 🚀 How to Run the Application
+
+### 1️⃣ Start the NATS Server
+
+#### ✅ Using Docker (recommended)
+
+```bash
+docker run -p 4222:4222 -p 8222:8222 nats:latest
+```
+
+* Port `4222`: used by the NATS client
+* Port `8222`: used for monitoring (optional)
+
+#### 🧪 Without Docker
+
+Download and install the NATS server: [NATS Installation Guide](https://docs.nats.io/running-a-nats-service/introduction/installation)
+
+Then run:
+
+```bash
+nats-server
+```
+
+---
+
+### 2️⃣ Start the Backend (Go)
 
 #### Prerequisites:
--Go to 1.18 or higher
 
+* Go 1.18 or higher
 
 #### Steps:
-``coup
+
+```bash
 cd sensor-backend
-and against descargar
+go mod download
 ```
 
+Create a `.env` file or export the environment variables manually:
 
-Create a file`.env`or export the variables:
-
-
-``coup
-export NATS URL=nationals://host local:4222
-export PUERTO=8080
+```bash
+export NATS_URL=nats://localhost:4222
+export PORT=8080
 ```
 
+Start the backend:
 
-Start the server:
-``coup
-and run principal.go
+```bash
+go run main.go
 ```
 
-
-The backend will be in:`http://localhost:8080`
-
+> Backend will be available at: `http://localhost:8080`
 
 ---
 
-
-### 🎨 3. Frontend Start (React + TailwindCSS)
-
+### 3️⃣ Start the Frontend (React + TailwindCSS)
 
 #### Prerequisites:
--Node.js 18+
 
+* Node.js 18+
 
 #### Steps:
-``coup
-cd sensor interface
+
+```bash
+cd sensor-frontend
 npm install
 ```
 
+Create a `.env` file with the backend API URL:
 
-Create a file`.env`with the API URL:
 ```env
-REACT APP RETURN URL=http://localhost:8080
+REACT_APP_BACKEND_URL=http://localhost:8080
 ```
-
 
 Start the frontend:
-``coup
-npm begin
+
+```bash
+npm start
 ```
 
-
-The frontend will be in:`http://localhost:3000`
-
+> Frontend will be available at: `http://localhost:3000`
 
 ---
 
+## 🛠️ Technologies Used
 
-## 🛠️ Technologies used
-
-
-- **NATS**: Message Broker (Publish/Subscribe)
-- **And**:Lightweight and efficient backend
-- **React**: Fast and responsive frontend
-- **TailwindCSS**:Fast and responsive style
-
+* **NATS** — Lightweight and fast messaging system (Pub/Sub)
+* **Go (Golang)** — Efficient and scalable backend
+* **React** — Modern frontend framework
+* **TailwindCSS** — Utility-first CSS framework for responsive UIs
 
 ---
 
+## 🧪 Testing
 
-## 🧪 Testicles
+This project uses **Jest** and **React Testing Library** for unit testing.
 
+### ▶️ Run Tests
 
-This project uses**Is**and**React Testing Library**to test components.
-
-
-### ▶️ Run tests
-
-
-``coup
-npm proof
+```bash
+npm test
 ```
 
+### ✅ Run Tests with Coverage Report
 
-### ✅ Run tests with coverage report
-
-
-``coup
-npm proof -- --coverage
+```bash
+npm test -- --coverage
 ```
 
+A `coverage/` folder will be created with the full report.
 
-After execution, the folder will be generated.`coverage/`with a full report.
+### 🌐 Open Coverage Report in Browser
 
+* On macOS or Linux:
 
-### 🌐 View HTML report in browser
+  ```bash
+  open coverage/lcov-report/index.html
+  ```
 
+* On Windows:
 
-And macOS o Linux:
-``coup
-open coverage/lcov-report/index.html
+  ```bash
+  start coverage/lcov-report/index.html
+  ```
+
+### 📦 Install Test Dependencies (if needed)
+
+```bash
+npm install --save-dev @testing-library/react @testing-library/jest-dom
 ```
 
+Also, include the following line at the top of your `setupTests.js`:
 
-Without windows:
-``coup
-begin coverage/lcov-report/index.html
+```js
+import '@testing-library/jest-dom';
 ```
-
 
 ---
 
+## 💡 Notes
 
-### 📦 Install the test dependencies (if you haven't already)
-
-
-``coup
-npm install --guard-dev @test-library/react @test-library/jest-dom
-```
-
+* Make sure NATS is running **before** starting the backend.
+* The frontend communicates with the backend via **REST**, and the backend communicates with **NATS**.
+* A `natsClient.js` example may exist in the frontend for testing, but production communication is handled via the backend.
 
 ---
-
-
-Include`importar '@testing-library/jest-dom'`At the top of the`setupTests.js`to use custom comparators.
-
-
-
-
-## 📋 Observations
-
-
--Make sure NATS is enabled before starting the backend.
--The frontend communicates with the backend via REST and the backend with NATS.
--The file`natsClient.js`On the frontend it can be used for testing, but the real communication is through the backend.
-
-
----
-
 
 ## ✅ Features
 
-
--Listing and registering sensors
--Communication via NATS between frontend and backend
--Responsive interface with TailwindCSS
-
+* List and register sensors
+* Real-time communication using NATS
+* Fully responsive interface using TailwindCSS
 
 ---
 
+## 🗺️ Architecture Diagram
 
-## Diagram
-
-
-![Architecture diagram](./arquitectura-de-simulación-de-sensores.png)
-
+![Architecture diagram](./sensor-simulation-architecture.png)
 
 ---
-
 
 ## 📄 License
 
+This project is licensed under the **MIT License**.
 
-This project is licensed under the MIT License.
+---
